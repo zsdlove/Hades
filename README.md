@@ -7,10 +7,10 @@
 ### 1、前端方面
 前端采用easyUI编写，本来打算使用vue的，不过vue方面还不是特别的熟悉，考虑到解决bug来可能会比较耗时，所以采用比较简单的easyUI来编写前端。
 先展示下前端效果，以下是任务提交页面 
-![markdown](https://github.com/zsdlove/Hades/tree/master/img/图片1.png "图片1")
+![markdown](https://github.com/zsdlove/Hades/blob/master/img/%E5%9B%BE%E7%89%871.png?raw=true "图片1")
 以下是报告展示页面
-![markdown](https://github.com/zsdlove/Hades/tree/master/img/图片2.png "图片2")
-![markdown](https://github.com/zsdlove/Hades/tree/master/img/图片3.png "图片3")
+![markdown](https://github.com/zsdlove/Hades/blob/master/img/%E5%9B%BE%E7%89%872.png?raw=true "图片2")
+![markdown](https://github.com/zsdlove/Hades/blob/master/img/%E5%9B%BE%E7%89%873.png?raw=true "图片3")
 ### 2、后端方面
 后端使用django实现文件接收接口，并对文件类型和合法性进行校验，通过redis消息队列将任务消息发布到消息队列中，传递给后端引擎。
 3、底层引擎方面
