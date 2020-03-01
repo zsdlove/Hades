@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>资产录入</title>
+  <link rel="stylesheet" href="/static/css/layui.css">
+</head>
+<body>
+<fieldset class="layui-elem-field site-demo-button" style="margin-top: 5px;">
+        <legend>资产录入</legend>
+<form class="layui-form" action="handle_newassert_entry" method="POST">
+  <div class="layui-form-item">
+    <label class="layui-form-label">任务名称</label>
+    <div class="layui-input-inline" >
+        <input type="text" name="assert_name" required  lay-verify="required" placeholder="请输入任务名称" autocomplete="off" class="layui-input"></input>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">资产录入</label>
+    <div class="layui-input-inline" style="padding-top:10px;">
+        <textarea name="target_urls" style="height:400px;padding-top:10px;" required  lay-verify="required" placeholder="请录入资产信息,示例：&#10;192.168.1.1&#10;192.168.1.2&#10;192.168.1.2&#10;" autocomplete="off" class="layui-input"></textarea>
+    </div>
+      <div class="layui-form-mid layui-word-aux"><font color="red">提示：每行一个资产（ip/域名）</font></div>
+  </div>
+  <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">资产描述</label>
+    <div class="layui-input-block">
+      <textarea name="assert_desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <!--<button class="layui-btn" lay-submit lay-filter="formDemo">开始扫描</button>-->
+      <input type="submit" class="layui-btn" value="开始录入">
+      <input type="reset" class="layui-btn" value="重新输入">
+    </div>
+  </div>
+  <div class="layui-form-item layui-form-text">
+    <div class="layui-input-block">
+      <p><font color="red">{{data}}</font></p>
+    </div>
+  </div>
+</form>
+</fieldset>
+<br>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+  <legend>已录入资产信息：</legend>
+</fieldset>
+<table class="layui-hide" id="tabletest"></table>
+<script src="static/layui.js"></script>
+<script>
+layui.use('form', function(){
+  var form = layui.form;
+
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+    layer.msg(JSON.stringify(data.field));
+    return false;
+  });
+});
+</script>
+
+<script>
+  layui.use('table', function(){
+  var table = layui.table;
+  table.render({
+    elem: '#tabletest'
+    ,cols: [[
+       {field: 'id', title: 'ID',sort: true,align: 'center',width:120}
+      ,{field: 'assert_name', title: '任务名称',align: 'center',width:230}
+      ,{field: 'enter_time', title: '录入时间',align: 'center',width:300}
+      ,{field: 'assert_desc', title: '资产描述',align: 'center',width:400}
+      ,{field: 'option', title: '查看详请',align: 'center',width:120}
+    ]]
+    ,data: [
+            {
+               "id": "10001"
+              ,"assert_name": "华南资产信息"
+              ,"enter_time": "2019-01-12 12:07:00"
+              ,"assert_desc": "部分资产录入，仅作测试用"
+              ,"option": "<a href=''><font color='green'>详情</font></a> | <a href=''><font color='green'>巡检</font></a>"
+            },
+            {
+               "id": "10002"
+              ,"assert_name": "华北资产信息"
+              ,"enter_time": "2019-01-12 12:07:00"
+              ,"assert_desc": "部分资产录入，仅作测试用"
+              ,"option": "<a href=''><font color='green'>详情</font></a> | <a href=''><font color='green'>巡检</font></a>"
+            },
+            {
+               "id": "10003"
+              ,"assert_name": "日本政府资产信息"
+              ,"enter_time": "2019-01-12 12:07:00"
+              ,"assert_desc": "部分资产录入，仅作测试用"
+              ,"option": "<a href=''><font color='green'>详情</font></a> | <a href=''><font color='green'>巡检</font></a>"
+            },
+          ]
+        });
+    });
+</script>
+</body>
+</html>

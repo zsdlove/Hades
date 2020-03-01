@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>登录</title>
+  <link rel="stylesheet" href="/static/css/layui.css">
+</head>
+<div>
+<fieldset class="layui-elem-field site-demo-button" style="margin:0 auto;margin-top:200px;width:380px;">
+        <legend>登录</legend>
+<form class="layui-form" action="login" method="POST">
+    <div class="layui-form-item">
+    <label class="layui-form-label">用户名:</label>
+    <div class="layui-input-inline">
+      <input type="text" name="username" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">密码:</label>
+    <div class="layui-input-inline">
+      <input type="password" name="password" required  lay-verify="required" placeholder="××××××××" autocomplete="off" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux"></div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">验证码:</label>
+    <div class="layui-input-inline">
+        <input type="text" name="captcha" required  lay-verify="required" placeholder="请输入验证码" autocomplete="off" class="layui-input">
+        <a href=""><img src="{{ image_url }}" class="captcha" alt="captcha" style="padding-top:10px;">换一张</a>
+    </div>
+    <div class="layui-form-mid layui-word-aux"></div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <input type="submit" class="layui-btn" value="登录">
+    </div>
+  </div>
+</form>
+</fieldset>
+</div>
+<script src="static/layui.js"></script>
+<script>
+layui.use('form', function(){
+  var form = layui.form;
+
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+    layer.msg(JSON.stringify(data.field));
+    return false;
+  });
+});
+</script>
+</body>
+</html>
