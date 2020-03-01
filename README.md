@@ -35,6 +35,7 @@ Hades构造的指令控制流图大致效果图:
 在讲解释执行之前，我先简要说明下虚拟解释器的原理。虚拟解释器并不是真正的解释器，但是它应该具备解释器的主要功能，即对字节码指令进行解释，对堆栈进行存取处理。而如果我们希望在解释执行的时候能够收集到污点的一些传递情况，那么单纯的进行解释执行肯定是不够的，我们还需要在指令解释执行的基础上，增加污点的传播分析。那么，如何实现污点的传播分析呢？这是我们需要着重考虑的点。我们知道，传统的解释器，在解释执行的程序的时候，需要根据用户传入的参数，进行一些值的处理的。而与传统解释器不同的是，我们的虚拟执行引擎并不是真正的执行起来，也不需要让程序真正的执行起来，我们解释执行的目的不是为了对传入的值进行处理，而是分析传入的值的走势，我们关注的是它怎么走的，这个点。所以，我们会把用户传入的参数设置为污点，而这个获取用户输入参数的函数的返回值所存储的寄存器便会被我们标记为污点，这个函数是整个污点分析的起点，而这个污点寄存器则是这个污点网络主干路线上的第一个污点。
 我们在通过对函数引用进行解释之后，获得了污点网络中的第一个污点信息，那么现在我们来思考下接下来污点是如何分析的呢？其实我们知道，污点的传播无非是几个方式，一种是通过赋值的指令进行传递，第二种是通过数组操作指令将污点传递给了数组成员，第三种是通过函数调用，将污点传递给了函数执行结束的返回值(这里是寄存器)。所以我们只需要注重对这些赋值操作进行解释执行即可实现对污点的跟踪分析。
 Hades解释执行的指令:
+```json
 "invoke-virtual":self.handle_invoke,            
 "invoke-virtual/range": self.handle_invoke, 
 "invoke-static": self.handle_invoke, 
@@ -122,6 +123,7 @@ Hades解释执行的指令:
 "new-instance": self.default, 
 "packed-switch": self.default, 
 "sparse-switch": self.default,
+```
 其中，default表示该指令目前Hades暂不解释，但在之后的版本中，可能会考虑对其进行解释。
 
 ### 0x4 内存模拟
@@ -463,6 +465,7 @@ Source点
 Sink点
 ![markdown](https://github.com/zsdlove/Hades/blob/master/img/%E5%9B%BE%E7%89%8710.png?raw=true "图片3") 
 以下是Hades的分析报告：
+```json
 {
       "source": "Ljavax/servlet/http/HttpServletRequest;->getHeaders(Ljava/lang/String;)Ljava/util/Enumeration;", 
       "linearCode": [
@@ -571,6 +574,7 @@ Sink点
       "sink": "Ljava/lang/Runtime;->exec(Ljava/lang/String;)Ljava/lang/Process;", 
       "sourceBelongTo": "org/owasp/benchmark/testcode/BenchmarkTest00017; doPost(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;)V"
     }
+```
 
 其中linearcode中记录的是从source点到sink点这条污点路线走过的所有指令。这里，我本来是想只解释执行source点到sink点之间的代码的，不过，后来发现如果只解释执行source点到sink点之间的指令代码的话，针对数组方面的污点分析能力就会变弱。为什么呢？因为数组成员的一些赋值操作是在source点之前进行的，如果没有对这些赋值操作进行解析，那么后续针对数组成员的污点分析无法实现，只能将数组整体标记为污点，认定从该数组取出来的元素都为污点，这样无疑会增加误报的几率。
 
@@ -826,6 +830,7 @@ sink点
 ![markdown](https://github.com/zsdlove/Hades/blob/master/img/%E5%9B%BE%E7%89%8714.png?raw=true "图片3")  
 
 下面是Hades的检测报告：
+```json
     {
       "source": "Ljavax/servlet/http/HttpServletRequest;->getHeaders(Ljava/lang/String;)Ljava/util/Enumeration;", 
       "linearCode": [
@@ -924,6 +929,7 @@ sink点
       "sink": "Ljava/sql/Statement;->executeUpdate(Ljava/lang/String;)I", 
       "sourceBelongTo": "org/owasp/benchmark/testcode/BenchmarkTest00018; doPost(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;)V"
     }
+```
 
 ## 八、招募项目长期维护
 目前该项目中只支持java源码的审计，后续计划支持php，c/c++，js等语言。如果你对白盒感兴趣，并具有一定的编程能力(最好全栈)，可先加我为好友，我将把你拉近Hades白盒审计系统开源项目的交流群中。
