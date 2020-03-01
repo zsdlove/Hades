@@ -13,23 +13,22 @@
 ![markdown](https://github.com/zsdlove/Hades/blob/master/img/%E5%9B%BE%E7%89%873.png?raw=true "图片3")
 ### 2、后端方面
 后端使用django实现文件接收接口，并对文件类型和合法性进行校验，通过redis消息队列将任务消息发布到消息队列中，传递给后端引擎。
-3、底层引擎方面
+### 3、底层引擎方面
 通过redis消息队列接收到任务信息，新建一个任务线程对上传的文件进行分析。针对源码的处理是，如果是maven管理的项目则使用mvn compile进行编译。如果是普通的java项目的话则使用javac进行单文件编译(考虑到整体编译的话会造成编译失败，遗失字节码文件)。然后，将最终得到的java字节码文件转为smali字节码文件(为什么要转为smali字节码文件呢?后面会进行说明)，最后将最终的字节码文件作为输入传递给主引擎程序进行执行分析。
-4、软件整体的执行流程示意图如下：
- 
+### 4、软件整体的执行流程示意图如下：
+![markdown](https://github.com/zsdlove/Hades/blob/master/img/%E5%9B%BE%E7%89%874.png?raw=true "图片3") 
 ## 三、smali字节码简介
 因为本白盒程序主要基于smali文件进行分析的，所以这里我先简要介绍下smali字节码。而说到smali字节码，可能很多同学不太了解。那么，我先讲下程序的编译过程。程序的编译一般需要经过六个过程，即: 词法分析、语法分析、语义分析、中间代码生成、代码优化、目标代码生成。下面简要说明下这六个过程的各自的工作。词法分析，主要是对输入的源码文件中的字符从左到右逐个进行分析，输出与源代码等价的token流。语法分析，主要是基于输入的token流，根据语言的语法规则，做一些上下文无关的语法检查，语法分析结束之后，生成AST语法树。语义分析，主要是将AST语法树作为输入，并基于AST语法树做一些上下文相关的类型检查。语义分析结束后，生成中间代码，而此时的中间代码，是一种易于转为目标代码的一种中间表示形式。代码优化，则是针对中间代码进行进一步的优化处理，合并其中的一些冗余代码，生成等价的新的中间表示形式，最后生成目标代码。 
- 
+![markdown](https://github.com/zsdlove/Hades/blob/master/img/%E5%9B%BE%E7%89%875.png?raw=true "图片5") 
 那么，我为什么要选择smali作为分析java程序的目标代码呢？引言中已经提到了，一方面，最近在做一个android相关的项目，项目中已经实现了smali层面的污点跟踪引擎，如果能够直接复用之前写的这套污点分析代码，那岂不是很爽，不用继续造轮子了。另一方面，相较java字节码来说，smali字节码更加的简单，因为smali字节码是一种基于寄存器的指令系统，它的指令是二地址和三地址混合的，指令中指明了操作数的地址。而JVM是基于栈的虚拟机，JVM将本地变量放到一个本地变量列表中，在进行指令解释的时候，将变量push到操作数栈中，由操作码对应的解释函数来进行解释执行。所以，java字节码操作无疑会比smali字节码更复杂一些，复杂主要体现在后续的堆栈设计以及代码解释执行。
 ## 四、白盒引擎实现详细说明
 下面我分六个部分，详细说明下我的白盒引擎实现思路。
 ### 0x1 指令控制流图构造
 要实现指令控制流图的构造，首先我们需要对每一个类字节码进行切片，解析出一个个的指令代码块，然后将各个指令代码块进行依赖分析，并保存为图的形式。但是总不至于针对每一个函数都构造指令控制流图吧，这样太费时，而且有些函数，程序在执行过程中不一定会调用到的，那么我们构建它又有什么意义呢？。我们知道，每一个程序都会有一个入口函数，比如java程序中的main函数，或者一些涉及网络请求映射处理的函数，比如servlet中的doPost，doGet等。只要从这些入口点进行指令控制流图的构建，就可以尽可能的覆盖程序执行过程中可能走过的路线。
 Hades构造的指令控制流图大致效果图:
- 
-
+![markdown](https://github.com/zsdlove/Hades/blob/master/img/%E5%9B%BE%E7%89%876.png?raw=true "图片6") 
 局部放大版：
- 
+![markdown](https://github.com/zsdlove/Hades/blob/master/img/%E5%9B%BE%E7%89%877.png?raw=true "图片7") 
 ### 0x2 通路计算
 构建好了指令控制流图之后，如果我们每一条路线，每个指令都解释执行一遍，那肯定是十分耗时的，所以考虑到执行效率方面，Hades会先找到sink点和source点各自所处的代码块节点，通过图的查询算法，查询两个节点(代码块节点)之间的通路(这个通路可能不止一条)，然后将这条通路中的所有代码块合并在一起，重新组成一段线性的代码块，然后对这段代码块记性解释执行。
 ### 0x3 解释执行
@@ -165,13 +164,10 @@ Name，value，isTained，分别对应对应寄存器名，寄存器值，及污
 Hades污点栈结构设计参考了DVM的的栈设计方案，有点类似'寄存器窗口',这也是dvm解释器栈的一个特色，当然这只是大概的示意图，具体的栈结构和栈帧结构在上图的结构的基础上做了一些更加适配污点跟踪分析的设计，在此就不给出了。下面解释下栈帧顶部的out区域和in区域的作用，这里out和int区域的设计主要是为了函数间参数的传递，虽然我们不需要真实参数值/对象的传递，但是我们需要获取上一个函数传入的参数的污点属性。为了获取上一个函数中的污点属性，需要在上一个函数执行到函数调用的时候，将参数push到当前栈帧的顶部out区域，然后参数由out区域传入到in区域，当执行到调用的函数的时候，程序从栈帧的底部in区域获取到参数信息（包含了污点属性的参数信息，以及一些必要的值信息）。依据此污点栈设计，我们就可以对函数间的污点传播进行跟踪分析。
 #### 3、堆部分
 Hades中的堆的设计并不是很多，也不是很完善，目前主要用来存放数组信息，用于处理数组成员的污点追踪操作。
-
 ### 0x5 污点追踪
 最后我们来对最重要的环节，污点追踪，前面的设计也是为了该部分服务。Hades的污点传播方式分为栈帧型污点传播，和指令型污点传播。指令型污点传播，顾名思义，就是通过解释执行字节码指令来进行污点传播的，在上面我们也提过，那么什么是栈帧型污点传播呢？在进行一个新函数的污点分析之前，Hades会为新函数分配一个污点栈帧，在这个污点栈帧中会为新函数分配好指令解释执行过程中需要的所有虚拟寄存器，以满足指令解释执行的需要。(smali是一种基于寄存器操作的字节码，值的操作都是基于虚拟寄存器的，不像c及java等语言字节码，有大量值的存取操作)新栈帧中一部分寄存器来自函数的入参，入参来自上一个栈帧的输出区域。在上一个函数发生函数调用的时候，Hades会将函数的传入参数(包含寄存器中的污点信息,值信息)保存在上一个函数栈帧的输出区域中，在解释执行新函数的之前，旧栈帧会对新栈帧进行一个污点的传递，将污点信息传递到新函数的入参中，这样就完成了函数间的污点传递，即栈帧与栈帧之间的污点传播。
-
 ### 0x6 污点净化部分
 Hades之初并不将净化函数加入到污点分析过程中，主要的考虑到没有一个第三方安全厂商能够百分百保证他们的安全sdk中的净化函数不存在被绕过的风险。但是实际攻击过程中，必要的防护代码确实能够防住绝大部分的攻击测试。后续，Hades方面将会逐步增加净化函数方面规则的支持。 
-
 ## 五、规则配置部分
 Hades的规则配置部分以下几个部分：
 1、sink点规则配置。
@@ -242,7 +238,7 @@ public class BenchmarkTest00017 extends HttpServlet {
 这里简要的分析一下程序：
 后端程序通过request.getheader函数获取客户端网络请求的头部信息，并从中读取第一个element信息作为参数进入到命令执行函数中，这就构成了一个命令执行漏洞。
 下面是污点传递的示意图
- 
+![markdown](https://github.com/zsdlove/Hades/blob/master/img/%E5%9B%BE%E7%89%878.png?raw=true "图片3") 
 好，下面我们使用Hades来对该程序进行检测。
 以下是Hades 生成的smali字节码
 ```
@@ -456,7 +452,6 @@ public class BenchmarkTest00017 extends HttpServlet {
     goto :goto_54
 .end method
 ```
-
 这里我们将doPost作为我们的入口点进行指令控制流的构造，那么如何生成一个入口点呢？这里可以使用我项目中的一个入口点生成工具funcInvokeGenerate.py即可生成期望得到的入口点信息，只需要输入入口点函数名称和相应的所属的jar包路径即可。
 source点:
 Ljavax/servlet/http/HttpServletRequest;->getHeaders(Ljava/lang/String;)Ljava/util/Enumeration;
@@ -464,11 +459,9 @@ sink点:
 Ljava/lang/Runtime;->exec(Ljava/lang/String;)Ljava/lang/Process;
 以下是hades构造的指令控制流图(由于生成的控制流图过大，故我只截取了部分的控制流图)
 Source点
- 
-
+![markdown](https://github.com/zsdlove/Hades/blob/master/img/%E5%9B%BE%E7%89%879.png?raw=true "图片3") 
 Sink点
- 
-
+![markdown](https://github.com/zsdlove/Hades/blob/master/img/%E5%9B%BE%E7%89%8710.png?raw=true "图片3") 
 以下是Hades的分析报告：
 {
       "source": "Ljavax/servlet/http/HttpServletRequest;->getHeaders(Ljava/lang/String;)Ljava/util/Enumeration;", 
@@ -583,7 +576,7 @@ Sink点
 
 这里，只显示字节码，和源码的关联性还没有做，不过要做的话也容易，因为字节码里都有对该部分的字节码对应的java源码的行号标记，即.line xx。我们根据字节码里的行号标记在源码里的对应行找到相应源码即可。
 
-2、测试2 SQL注入漏洞
+### 2、测试2 SQL注入漏洞
 本测试单元对应的是benchmark的靶场18
 ```java
 /**
@@ -646,8 +639,7 @@ public class BenchmarkTest00018 extends HttpServlet {
 简要的说明下该程序代码：
 后端程序通过request.getheader函数获取客户端网络请求的头部信息，并从中读取第一个element信息作为参数进入到拼接形式的sql语句中，并最终进入到sql操作函数中。 
 下面是污点传递的示意图
- 
-
+![markdown](https://github.com/zsdlove/Hades/blob/master/img/%E5%9B%BE%E7%89%8711.png?raw=true "图片3") 
 好，下面我们使用Hades来对该程序进行检测。
 以下是Hades 生成的smali字节码
 ```
@@ -826,14 +818,12 @@ Ljavax/servlet/http/HttpServletRequest;->getHeaders(Ljava/lang/String;)Ljava/uti
 `Ljava/sql/Statement;->executeUpdate(Ljava/lang/String;)I`
 
 以下是Hades生成的指令控制流图
- 
-
+![markdown](https://github.com/zsdlove/Hades/blob/master/img/%E5%9B%BE%E7%89%8712.png?raw=true "图片3") 
 由于指令控制流图太大，无法清晰的展示中间的指令信息，所以下面重点展示下source点和sink点相关的片段。
 Source点:
- 
-
+![markdown](https://github.com/zsdlove/Hades/blob/master/img/%E5%9B%BE%E7%89%8713.png?raw=true "图片3") 
 sink点
- 
+![markdown](https://github.com/zsdlove/Hades/blob/master/img/%E5%9B%BE%E7%89%8714.png?raw=true "图片3")  
 
 下面是Hades的检测报告：
     {
