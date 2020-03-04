@@ -196,7 +196,7 @@ Hades的规则配置部分以下几个部分：
 来自androidSDK，用于将java字节码转为smali字节码。
 2、baksmali.jar
 用于将dex文件反编译为smali。
-## 七、Demo测试
+## 七、Benchmark测试
 这里我们以Benchmark的靶场作为测试的示例程序。
 ### 1、测试1 命令执行漏洞
 本测试单元，对应benchmark中的第17个靶场。
