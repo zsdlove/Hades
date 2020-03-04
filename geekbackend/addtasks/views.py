@@ -48,28 +48,34 @@ def getdata(request):
 			return
 		allData=dataBase.getdata(r,apkname)
 		print(json.loads(allData['codeAnalysis']))
-		retData={
-			"author": allData["author"],
-			"version": allData["version"],
-			"permission": allData["permission"],
-			"nastySDKs": allData["nastySDKs"],
-			"codeAnalysis": json.loads(allData["codeAnalysis"]),
-			"warming": json.loads(allData["warming"])
-		}
-		return render(request, "report.html", {"msg": retData})
+		try:
+			retData={
+				"author": allData.get("author"),
+				"version": allData.get("version"),
+				"permission": allData.get("permission"),
+				"nastySDKs": allData.get("nastySDKs"),
+				"codeAnalysis": json.loads(allData.get("codeAnalysis")),
+				"warming": json.loads(allData.get("warming"))
+			}
+			return render(request, "report.html", {"msg": retData})
+		except:			
+			return render(request, "404.html", {"msg": u"报告暂未生成，请稍等."})
 	elif params.get("taskhash")!=None:
 		taskhash=params.get("taskhash")
 		if "'" in taskhash or "=" in taskhash:
 			return
 		allData=dataBase.getdata(r,taskhash)
 		print(json.loads(allData['codeAnalysis']))
-		retData={
-			"author": allData["author"],
-			"version": allData["version"],
-			"codeAnalysis": json.loads(allData["codeAnalysis"]),
-			"warming": json.loads(allData["warming"])
-		}
-		return render(request, "reportForJavaWhite.html", {"msg": retData})
+		try:
+			retData={
+				"author": allData.get("author"),
+				"version": allData.get("version"),
+				"codeAnalysis": json.loads(allData.get("codeAnalysis")),
+				"warming": json.loads(allData.get("warming"))
+			}
+			return render(request, "reportForJavaWhite.html", {"msg": retData})
+		except:
+			return render(request, "404.html", {"msg": u"报告暂未生成，请耐心等待"})
 	else:
 		return render(request, "404.html", {"msg": "error"})
 
