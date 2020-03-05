@@ -21,7 +21,6 @@ import threading
 from utils.entry import *
 from utils.Reperter import *
 
-from plugin.shellDetector import *
 class apkvulcheck:
 	def __init__(self):
 		self.resultinfo = {}
