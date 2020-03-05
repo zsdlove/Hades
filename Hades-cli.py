@@ -21,6 +21,7 @@ import threading
 from utils.entry import *
 from utils.Reperter import *
 
+from plugin.shellDetector import *
 class apkvulcheck:
 	def __init__(self):
 		self.resultinfo = {}
@@ -220,7 +221,7 @@ def engine_main():
 	print("[*]Try to start the Hades Engine...")
 	time.sleep(0.5)
 	print("[*]Start Hades Engine Successfully!")
-	pool = redis.ConnectionPool(host='127.0.0.1',port=6379, db=6)
+	pool = redis.ConnectionPool(host='0.0.0.0',port=6379, db=6)
 	r = redis.StrictRedis(connection_pool=pool)
 	p = r.pubsub()
 	p.subscribe("Hades")
