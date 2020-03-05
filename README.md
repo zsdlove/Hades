@@ -16,7 +16,7 @@ start web server:
 ### 使用docker安装Hades
 ```shell
 >>docker build -t geekbackend .
->>docker run 8088:8088 geekbackend
+>>docker run -p 8088:8088 geekbackend
 :)enjoy it.
 ```
 ## 一、引言
