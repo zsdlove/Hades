@@ -22,4 +22,4 @@ apt-get install -y default-jdk
 echo "依赖安装完毕"
 redis-server /usr/local/etc/redis/redis.conf &
 python geekbackend/manage.py runserver 0.0.0.0:8088 &
-python Hades-cli.py &
+python Hades-cli.py
