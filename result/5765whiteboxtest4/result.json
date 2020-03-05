@@ -1,0 +1,72 @@
+{
+  "permission": [], 
+  "version": "v1.0.0", 
+  "codeAnalysis": [
+    {
+      "source": "Lcom/moresc/cn/base;->getHttpRequests()Ljava/lang/String;", 
+      "linearCode": [
+        "LMain; main([Ljava/lang/String;)V 1", 
+        "1: .registers 4", 
+        "2: .prologue", 
+        "3: .line 5", 
+        "4: new-instance v0, Lcom/moresc/cn/base;", 
+        "5: invoke-direct {v0}, Lcom/moresc/cn/base;-><init>()V", 
+        "", 
+        "LMain; main([Ljava/lang/String;)V 6", 
+        "6: .line 6", 
+        "7: invoke-virtual {v0}, Lcom/moresc/cn/base;->getHttpRequests()Ljava/lang/String;", 
+        "", 
+        "LMain; main([Ljava/lang/String;)V 8", 
+        "8: move-result-object v1", 
+        "9: .line 7", 
+        "10: sget-object v2, Ljava/lang/System;->out:Ljava/io/PrintStream;", 
+        "11: invoke-virtual {v0, v1}, Lcom/moresc/cn/base;->responseToClient(Ljava/lang/String;)Ljava/lang/String;", 
+        ""
+      ], 
+      "sinkBelongTo": "Main; main([Ljava/lang/String;)V", 
+      "sink": "Lcom/moresc/cn/base;->responseToClient(Ljava/lang/String;)Ljava/lang/String;", 
+      "sourceBelongTo": "Main; main([Ljava/lang/String;)V"
+    }
+  ], 
+  "warming": [
+    {
+      "source": "Lcom/moresc/cn/base;->getHttpRequests()Ljava/lang/String;", 
+      "linearCode": [
+        "LMain; main([Ljava/lang/String;)V 6", 
+        "6: .line 6", 
+        "7: invoke-virtual {v0}, Lcom/moresc/cn/base;->getHttpRequests()Ljava/lang/String;", 
+        ""
+      ], 
+      "sinkBelongTo": "", 
+      "sink": "", 
+      "sourceBelongTo": ""
+    }, 
+    {
+      "source": "Lcom/moresc/cn/base;->getHttpRequests()Ljava/lang/String;", 
+      "linearCode": [
+        "LMain; main([Ljava/lang/String;)V 6", 
+        "6: .line 6", 
+        "7: invoke-virtual {v0}, Lcom/moresc/cn/base;->getHttpRequests()Ljava/lang/String;", 
+        ""
+      ], 
+      "sinkBelongTo": "", 
+      "sink": "", 
+      "sourceBelongTo": ""
+    }, 
+    {
+      "source": "", 
+      "linearCode": [
+        "LMain; main([Ljava/lang/String;)V 8", 
+        "8: move-result-object v1", 
+        "9: .line 7", 
+        "10: sget-object v2, Ljava/lang/System;->out:Ljava/io/PrintStream;", 
+        "11: invoke-virtual {v0, v1}, Lcom/moresc/cn/base;->responseToClient(Ljava/lang/String;)Ljava/lang/String;", 
+        ""
+      ], 
+      "sinkBelongTo": "", 
+      "sink": "Lcom/moresc/cn/base;->responseToClient(Ljava/lang/String;)Ljava/lang/String;", 
+      "sourceBelongTo": ""
+    }
+  ], 
+  "author": "pOny@moresec"
+}
