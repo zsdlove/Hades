@@ -17,8 +17,16 @@ class Reperter:
 				singleOne={
 					"author":self.resultContainer.get("author"),
 					"version":self.resultContainer.get("version"),
+					"packageName":self.resultContainer.get("packageName"),
 					"permission":json.dumps(self.resultContainer.get("permission")),
-					"nastySDKs":self.resultContainer.get("nastySDKs"),
+					"activity":json.dumps(self.resultContainer.get("activity")),
+					"service":json.dumps(self.resultContainer.get("service")),
+					"provider":json.dumps(self.resultContainer.get("provider")),
+					"receiver":json.dumps(self.resultContainer.get("receiver")),
+					"nastySDKs":json.dumps(self.resultContainer.get("nastySDKs")),
+					"otherSDKs":json.dumps(self.resultContainer.get("otherSDKs")),
+					"Advertisement":json.dumps(self.resultContainer.get("Advertisement")),
+					"thirdpartPayAPI":json.dumps(self.resultContainer.get("thirdpartPayAPI")),
 					"codeAnalysis":json.dumps(self.resultContainer.get("codeAnalysis")),
 					"warming":json.dumps(self.resultContainer.get("warming")),
 				}

@@ -17,7 +17,34 @@ from cfg.graphManage import graphTools
 from cfg.cfgManage import CFGBuilder
 import os
 sys.setrecursionlimit(1000000)
+'''
+reg object
+{
+    name:"v1"
+    value:"" #根据分析获得
+    tained:False
+}
+明天要做的是将每一条指令都解析一下，然后配合方法中的cfg（goto指令很需要这个），
+进行污点分析，先将demo中的source点和sink点分析出来，然后再写一些其他的例子进行分析。
+虚拟机需要做的事情：
+1、识别指令，并找到相应的解释函数去解释执行。
+执行的目的是：找到污点传播关系。寄存器对象有两个属性值，一个是污点值，一个是数值。以demo为例，
+demo中污点进入数组后又取出来，然后赋值给一个变量，变量进入sink函数造成敏感信息泄露（or flaw）。
+这里数组操作需要找到变量是被传到了哪个索引位置，并且对该索引位置进行标记而不是针对整体的数组。
+先针对函数的识别：第一步找到函数invoke指令，第二步，找到返回指令，返回指令中的寄存器即为第一个污点寄存器。
+下面关注该寄存器的污点传播情况。无非是赋值操作和函数调用，这里先不考虑函数调用，先考虑下赋值操作和数组操作。
+关于赋值操作的寻址方式：
+1、寄存器与寄存器之间的赋值操作就是两个寄存器之间的污点属性传播.
+2、立即数，这个一般是针对数组操作的。锁定哪个数组成员是污点
+3、而数组操作的关键步骤也是赋值操作，是将某个寄存器的赋给数组某个成员。这个阶段可以进行污点传播操作。
+所以这里需要有一个数组对象。
 
+miniDVM：
+传入的callgraph，以及source点所在的函数。
+初始化操作 初始化寄存器。从source点往下执行，直到找到sink点。
+如果要增加指令解释支持，需要在goto_table中增加一个成员，然后再去实现键值对应的指令解释处理函数
+对于操作码的提取，使用split函数分割空格取第一个成员。
+'''
 class miniDVM(object):
     def __init__(self):
         self.methodHash=""
@@ -28,11 +55,11 @@ class miniDVM(object):
         self.currentSink=None
         self.linearCode=None
         self.resultContainer={
-            "author": "pOny@moresec",
-            "version": "v1.0.0",
-            "permission": [],
-            "codeAnalysis": [],
-            "warming": []
+            'author':'pOny@moresec',
+            'version':'v1.0.0',
+            'permission':[],
+            'codeAnalysis':[],
+            'warming':[]
         }
         self.tainedHash=""
         self.sourceBelongTo=None
@@ -201,29 +228,27 @@ class miniDVM(object):
                             if sink in codeblock:
                                 sinkblocks.append(codeblock)
                                 logging.info("[Init] - 	sink点:%s" % sink)
-                                cbk=codeblock.split("\l")
                                 warming_sink={
                                     "sink":sink,
                                     "source":"",
-                                    "sinkBelongTo":self.methodName,
+                                    "sinkBelongTo":"",
                                     "sourceBelongTo":"",
-                                    "linearCode":cbk
+                                    "linearCode":codeblock
                                 }
-                                self.resultContainer["warming"].append(warming_sink)
+                                self.resultContainer['warming'].append(warming_sink)
                                 logging.info("成功记录一条敏感点.")
 
                         for source in sourceContainer:
                             if source in codeblock:
                                 logging.info("[Init] - 	source点:%s" % source)
-                                cbk=codeblock.split("\l")
                                 warming_source = {
                                     "sink": "",
                                     "source": source,
                                     "sinkBelongTo": "",
-                                    "sourceBelongTo": self.methodName,
-                                    "linearCode": cbk
+                                    "sourceBelongTo": "",
+                                    "linearCode": codeblock
                                 }
-                                self.resultContainer["warming"].append(warming_source)
+                                self.resultContainer['warming'].append(warming_source)
                                 sourceblocks.append(codeblock)
 
                     '''
@@ -460,6 +485,7 @@ class miniDVM(object):
         '''
         找到sink,这里的污点分析可以用hook(装饰器)来做，不过之前的代码侵入性比较强，改造起来比较麻烦，后续再迭代更新吧。
         '''
+        #@resultHook
         tmpName, tmpTained, flag = None, None, False
         for sink in sinkContainer:
                     if sink == invokedMethodName[0]:
@@ -476,12 +502,12 @@ class miniDVM(object):
                                     logging.info("[DVM] - 找到sink点 %s"%invokedMethodName[0])
                                     self.currentSink=invokedMethodName[0]
                                     #结果存储
-                                    self.resultContainer["codeAnalysis"].append({
-                                        "sink":self.currentSink,
-                                        "source":self.currentSource,
-                                        "linearCode":self.linearCode,
-                                        "sinkBelongTo":self.methodName,
-                                        "sourceBelongTo":self.sourceBelongTo
+                                    self.resultContainer['codeAnalysis'].append({
+                                        'sink':self.currentSink,
+                                        'source':self.currentSource,
+                                        'linearCode':self.linearCode,
+                                        'sinkBelongTo':self.methodName,
+                                        'sourceBelongTo':self.sourceBelongTo
                                     })
                                     #flag=False
                                     break
@@ -615,21 +641,14 @@ class miniDVM(object):
                  logging.info("[DVM] - 寄存器值:%s"%r.value)
                  logging.info("[DVM] - 指令：%s"%ins)
                  index=int(r.value.replace("0x",""))
-                 bflag=False
-                 try:
-                     if self.hp.arrayContainer[midreg][index].isTained==True:
-                        logging.info("[DVM] - [数组操作] 数组 %s 偏移为 %s 的成员是污点"%(midreg, r.value))
-                        logging.info("[DVM] - [数组操作] 污点传播: %s[%s] -> %s"%(midreg, r.value,leftreg))
-                        for j in range(len(self.stack.stack[self.stack.esp].localvars)):
-                            if self.stack.stack[self.stack.esp].localvars[j].name==leftreg:
-                                self.stack.stack[self.stack.esp].localvars[j].isTained=True
-                                break
-                        bflag=True
-                        break
-                 except:
-                     pass
-                 if bflag==True:
-                     break
+                 if self.hp.arrayContainer[midreg][index].isTained==True:
+                    logging.info("[DVM] - [数组操作] 数组 %s 偏移为 %s 的成员是污点"%(midreg, r.value))
+                    logging.info("[DVM] - [数组操作] 污点传播: %s[%s] -> %s"%(midreg, r.value,leftreg))
+                    for j in range(len(self.stack.stack[self.stack.esp].localvars)):
+                        if self.stack.stack[self.stack.esp].localvars[j].name==leftreg:
+                            self.stack.stack[self.stack.esp].localvars[j].isTained=True
+                            break
+                    break
 
     '''
     处理寄存器数量标签

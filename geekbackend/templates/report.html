@@ -2,35 +2,155 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Hades - 移动安全检测报告</title>
     <link rel="stylesheet" href="/static/css/layui.css">
     <script src="/static/layui.js"></script>
 </head>
 <body>
 <div class="site-content" >
-    <h1>Hades - 移动隐私安全检测报告</h1>
+    <h1 class="site-h1" style="color:green"><center>Hades - 移动安全检测报告</center></h1>
     <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
       <ul class="layui-tab-title">
         <li class="layui-this">app基本信息</li>
         <li>权限信息</li>
-        <li>恶意sdk</li>
+        <li>SDK信息</li>
         <li>恶意行为</li>
         <li>漏洞信息</li>
         <li>关于作者</li>
       </ul>
       <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
-
+            <fieldset class="layui-elem-field">
+                <legend>应用基本信息</legend>
+                <div class="layui-field-box">
+                  <div class="layui-collapse">
+                      <div class="layui-colla-item">
+                          <h2 class="layui-colla-title">包名信息</h2>
+                          <div class="layui-colla-content layui-show">{{msg.packageName}}</div>
+                      </div>
+                  </div>
+                </div>
+                <div class="layui-field-box">
+                  <div class="layui-collapse">
+                      <div class="layui-colla-item">
+                          <h2 class="layui-colla-title">Activity信息</h2>
+                          <div class="layui-colla-content layui-show">
+                              {%  for ac in msg.activity %}
+                                <li>{{ac}}</li>
+                              {%  endfor %}
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="layui-field-box">
+                  <div class="layui-collapse">
+                      <div class="layui-colla-item">
+                          <h2 class="layui-colla-title">Service信息</h2>
+                          <div class="layui-colla-content layui-show">
+                              {%  for ac in msg.service %}
+                                <li>{{ac}}</li>
+                              {%  endfor %}
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="layui-field-box">
+                  <div class="layui-collapse">
+                      <div class="layui-colla-item">
+                          <h2 class="layui-colla-title">Content Provider信息</h2>
+                          <div class="layui-colla-content layui-show">
+                              {%  for ac in msg.provider %}
+                                <li>{{ac}}</li>
+                              {%  endfor %}
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="layui-field-box">
+                  <div class="layui-collapse">
+                      <div class="layui-colla-item">
+                          <h2 class="layui-colla-title">Broadcast Receiver信息</h2>
+                          <div class="layui-colla-content layui-show">
+                              {%  for ac in msg.receiver %}
+                                <li>{{ac}}</li>
+                              {%  endfor %}
+                          </div>
+                      </div>
+                  </div>
+                </div>
+            </fieldset>
         </div>
         <div class="layui-tab-item">
             {%  for k,v in msg.permission.items %}
-                <li>{{ k }}-{{ v }}</li>
-            {% endfor %}
+                <div class="layui-field-box">
+                  <div class="layui-collapse">
+                      <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">权限名:{{v.1}}</h2>
+                        <div class="layui-colla-content layui-show">权限:{{k}}</div>
+                        <div class="layui-colla-content layui-show">权限名:{{v.1}}</div>
+                        <div class="layui-colla-content layui-show">权限描述:{{v.2}}</div>
+                      </div>
+                  </div>
+                </div>
+            {%  endfor %}
         </div>
         <div class="layui-tab-item">
-            {%  for k,v in msg.permission.items %}
-                <li>{{ k }}-{{ v }}</li>
-            {% endfor %}
+            <fieldset class="layui-elem-field">
+                <legend>恶意sdk</legend>
+                {%  for k,v in msg.nastySDKs.items %}
+                <div class="layui-field-box">
+                  <div class="layui-collapse">
+                      <div class="layui-colla-item">
+                          <h2 class="layui-colla-title">{{v}}</h2>
+                          <div class="layui-colla-content layui-show">包名:{{k}}</div>
+                          <div class="layui-colla-content layui-show">描述:{{v}}</div>
+                      </div>
+                  </div>
+                </div>
+                {% endfor %}
+            </fieldset>
+            <fieldset class="layui-elem-field">
+                <legend>广告接口信息</legend>
+                {%  for k,v in msg.Advertisement.items %}
+                <div class="layui-field-box">
+                  <div class="layui-collapse">
+                      <div class="layui-colla-item">
+                          <h2 class="layui-colla-title">{{v}}</h2>
+                          <div class="layui-colla-content layui-show">包名:{{k}}</div>
+                          <div class="layui-colla-content layui-show">描述:{{v}}</div>
+                      </div>
+                  </div>
+                </div>
+                {% endfor %}
+            </fieldset>
+            <fieldset class="layui-elem-field">
+                <legend>第三方支付接口</legend>
+                {%  for k,v in msg.thirdpartPayAPI.items %}
+                <div class="layui-field-box">
+                  <div class="layui-collapse">
+                      <div class="layui-colla-item">
+                          <h2 class="layui-colla-title">{{v}}</h2>
+                          <div class="layui-colla-content layui-show">包名:{{k}}</div>
+                          <div class="layui-colla-content layui-show">描述:{{v}}</div>
+                      </div>
+                  </div>
+                </div>
+                {% endfor %}
+            </fieldset>
+            <fieldset class="layui-elem-field">
+                <legend>其他第三方SDK API</legend>
+                {%  for k,v in msg.otherSDKs.items %}
+                <div class="layui-field-box">
+                  <div class="layui-collapse">
+                      <div class="layui-colla-item">
+                          <h2 class="layui-colla-title">{{v}}</h2>
+                          <div class="layui-colla-content layui-show">包名:{{k}}</div>
+                          <div class="layui-colla-content layui-show">描述:{{v}}</div>
+                      </div>
+                  </div>
+                </div>
+                {% endfor %}
+            </fieldset>
         </div>
         <div class="layui-tab-item">
             {%  for k in msg.codeAnalysis %}
@@ -45,6 +165,49 @@
                       <div class="layui-colla-item">
                         <h2 class="layui-colla-title">source点位置</h2>
                         <div class="layui-colla-content layui-show">{{k.sourceBelongTo}}</div>
+                      </div>
+                      <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">sink点</h2>
+                        <div class="layui-colla-content layui-show">{{k.sink}}</div>
+                      </div>
+                      <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">sink点位置</h2>
+                        <div class="layui-colla-content layui-show">{{k.sinkBelongTo}}</div>
+                      </div>
+                      <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">代码轨迹追踪</h2>
+                        <div class="layui-colla-content layui-show">
+                            {% for l in k.linearCode %}
+                                <li>{{l}}</li>
+                            {% endfor %}
+                        </div>
+                      </div>
+                      <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">控制流图</h2>
+                        <div class="layui-colla-content layui-show">
+                            <img src="/static/images/default.png" />
+                        </div>
+                      </div>
+                  </div>
+                </div>
+            </fieldset>
+            {%  endfor %}
+            {%  for k in msg.warming %}
+            <fieldset class="layui-elem-field">
+                <legend>警告</legend>
+                <div class="layui-field-box">
+                  <div class="layui-collapse">
+                      <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">source点</h2>
+                        <div class="layui-colla-content layui-show">{{k.source}}</div>
+                      </div>
+                      <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">source点位置</h2>
+                        <div class="layui-colla-content layui-show">{{k.sourceBelongTo}}</div>
+                      </div>
+                      <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">sink点</h2>
+                        <div class="layui-colla-content layui-show">{{k.sink}}</div>
                       </div>
                       <div class="layui-colla-item">
                         <h2 class="layui-colla-title">sink点位置</h2>
@@ -79,12 +242,13 @@
         </div>
 
         <div class="layui-tab-item">
-            {%  for k,v in msg.permission.items %}
-                <li>{{ k }}-{{ v }}</li>
-            {% endfor %}
+            <li>暂时不支持漏洞检测</li>
         </div>
         <div class="layui-tab-item">
-            <h3>pOny@moresec</h3>
+            <li>昵称:pOny@moresec</li>
+            <li>职称:默安科技-安全研究院-前沿研究部 安全研究员</li>
+            <li>研究方向:移动安全、木马攻防技术、白盒</li>
+            <li>联系方式:747289639(微信同)</li>
         </div>
       </div>
     </div>

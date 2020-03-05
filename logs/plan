@@ -1,0 +1,125 @@
+2020-02-04 05:59:21,874 [INFO] - [Graph] - Lfridatest/test/com/myapplication/MainActivity; onCreate(Landroid/os/Bundle;)V 1
+2020-02-04 05:59:21,874 [INFO] - [Graph] - 1: .registers 10
+2020-02-04 05:59:21,874 [INFO] - [Graph] - 2: .param p1, \savedInstanceState\    # Landroid/os/Bundle;
+2020-02-04 05:59:21,875 [INFO] - [Graph] - 3: .prologue
+2020-02-04 05:59:21,875 [INFO] - [Graph] - 4: const/4 v7, 0x2
+2020-02-04 05:59:21,876 [INFO] - [Graph] - 5: const/4 v6, 0x1
+2020-02-04 05:59:21,876 [INFO] - [Graph] - 6: const/4 v5, 0x0
+2020-02-04 05:59:21,877 [INFO] - [Graph] - 7: .line 32
+2020-02-04 05:59:21,877 [INFO] - [Graph] - 8: invoke-super {p0, p1}, Landroid/support/v7/app/ActionBarActivity;->onCreate(Landroid/os/Bundle;)V
+2020-02-04 05:59:21,877 [INFO] - [Graph] -
+2020-02-04 05:59:21,878 [INFO] - [Graph] - Lfridatest/test/com/myapplication/MainActivity; onCreate(Landroid/os/Bundle;)V 9
+2020-02-04 05:59:21,878 [INFO] - [Graph] - 9: .line 33
+2020-02-04 05:59:21,879 [INFO] - [Graph] - 10: const v4, 0x7f040019
+2020-02-04 05:59:21,879 [INFO] - [Graph] - 11: invoke-virtual {p0, v4}, Lfridatest/test/com/myapplication/MainActivity;->setContentView(I)V
+2020-02-04 05:59:21,879 [INFO] - [Graph] -
+2020-02-04 05:59:21,880 [INFO] - [Graph] - Lfridatest/test/com/myapplication/MainActivity; onCreate(Landroid/os/Bundle;)V 12
+2020-02-04 05:59:21,880 [INFO] - [Graph] - 12: .line 34
+2020-02-04 05:59:21,881 [INFO] - [Graph] - 13: const/4 v4, 0x3
+2020-02-04 05:59:21,881 [INFO] - [Graph] - 14: new-array v0, v4, [Ljava/lang/String;
+2020-02-04 05:59:21,882 [INFO] - [Graph] - 15: const-string v4, \test223\
+2020-02-04 05:59:21,882 [INFO] - [Graph] - 16: aput-object v4, v0, v5
+2020-02-04 05:59:21,882 [INFO] - [Graph] - 17: const-string v4,
+2020-02-04 05:59:21,883 [INFO] - [Graph] - ove223\
+2020-02-04 05:59:21,883 [INFO] - [Graph] - 18: aput-object v4, v0, v6
+2020-02-04 05:59:21,884 [INFO] - [Graph] - 19: const-string v4, \talk223\
+2020-02-04 05:59:21,884 [INFO] - [Graph] - 20: aput-object v4, v0, v7
+2020-02-04 05:59:21,885 [INFO] - [Graph] - 21: .line 35
+2020-02-04 05:59:21,885 [INFO] - [Graph] - 22: .local v0, \arr\:[Ljava/lang/String;
+2020-02-04 05:59:21,885 [INFO] - [Graph] - 23: const-string v3, \fuck you\
+2020-02-04 05:59:21,886 [INFO] - [Graph] - 24: .line 36
+2020-02-04 05:59:21,886 [INFO] - [Graph] - 25: .local v3,
+2020-02-04 05:59:21,887 [INFO] - [Graph] - ove\:Ljava/lang/String;
+2020-02-04 05:59:21,887 [INFO] - [Graph] - 26: const-string v2, \test zsdlove\
+2020-02-04 05:59:21,887 [INFO] - [Graph] - 27: .line 37
+2020-02-04 05:59:21,888 [INFO] - [Graph] - 28: .local v2, \j\:Ljava/lang/String;
+2020-02-04 05:59:21,888 [INFO] - [Graph] - 29: sget-object v4, Ljava/lang/System;->out:Ljava/io/PrintStream;
+2020-02-04 05:59:21,889 [INFO] - [Graph] - 30: invoke-virtual {v4, v2}, Ljava/io/PrintStream;->println(Ljava/lang/String;)V
+2020-02-04 05:59:21,889 [INFO] - [Graph] -
+2020-02-04 05:59:21,890 [INFO] - [Graph] - Lfridatest/test/com/myapplication/MainActivity; onCreate(Landroid/os/Bundle;)V 31
+2020-02-04 05:59:21,890 [INFO] - [Graph] - 31: .line 38
+2020-02-04 05:59:21,890 [INFO] - [Graph] - 32: sget-object v4, Ljava/lang/System;->out:Ljava/io/PrintStream;
+2020-02-04 05:59:21,891 [INFO] - [Graph] - 33: aget-object v5, v0, v5
+2020-02-04 05:59:21,891 [INFO] - [Graph] - 34: invoke-virtual {v4, v5}, Ljava/io/PrintStream;->println(Ljava/lang/String;)V
+2020-02-04 05:59:21,892 [INFO] - [Graph] -
+2020-02-04 05:59:21,892 [INFO] - [Graph] - Lfridatest/test/com/myapplication/MainActivity; onCreate(Landroid/os/Bundle;)V 35
+2020-02-04 05:59:21,892 [INFO] - [Graph] - 35: .line 39
+2020-02-04 05:59:21,893 [INFO] - [Graph] - 36: sget-object v4, Ljava/lang/System;->out:Ljava/io/PrintStream;
+2020-02-04 05:59:21,893 [INFO] - [Graph] - 37: aget-object v5, v0, v6
+2020-02-04 05:59:21,894 [INFO] - [Graph] - 38: invoke-virtual {v4, v5}, Ljava/io/PrintStream;->println(Ljava/lang/String;)V
+2020-02-04 05:59:21,894 [INFO] - [Graph] -
+2020-02-04 05:59:21,895 [INFO] - [Graph] - Lfridatest/test/com/myapplication/MainActivity; onCreate(Landroid/os/Bundle;)V 39
+2020-02-04 05:59:21,895 [INFO] - [Graph] - 39: .line 40
+2020-02-04 05:59:21,896 [INFO] - [Graph] - 40: invoke-static {v3, v7}, Lfridatest/test/com/myapplication/MainActivity;->demofunc(Ljava/lang/String;I)Ljava/lang/String;
+2020-02-04 05:59:21,896 [INFO] - [Graph] -
+2020-02-04 05:59:21,896 [INFO] - [Graph] - Lfridatest/test/com/myapplication/MainActivity; onCreate(Landroid/os/Bundle;)V 41
+2020-02-04 05:59:21,897 [INFO] - [Graph] - 41: move-result-object v1
+2020-02-04 05:59:21,897 [INFO] - [Graph] - 42: .line 41
+2020-02-04 05:59:21,898 [INFO] - [Graph] - 43: .local v1, \f\:Ljava/lang/String;
+2020-02-04 05:59:21,898 [INFO] - [Graph] - 44: sget-object v4, Ljava/lang/System;->out:Ljava/io/PrintStream;
+2020-02-04 05:59:21,899 [INFO] - [Graph] - 45: invoke-virtual {v4, v1}, Ljava/io/PrintStream;->println(Ljava/lang/String;)V
+2020-02-04 05:59:21,899 [INFO] - [Graph] -
+2020-02-04 05:59:21,900 [INFO] - [Graph] - Lfridatest/test/com/myapplication/MainActivity; onCreate(Landroid/os/Bundle;)V 46
+2020-02-04 05:59:21,900 [INFO] - [Graph] - 46: .line 42
+2020-02-04 05:59:21,901 [INFO] - [Graph] - 47: return-void
+
+已经完成以上指令的执行并能够从sourc点追溯到sink点
+现在的想法是，想对block进行比对，将sink点和source点收集起来，分别放在sink点和source点，以便后续的
+路线规划。
+
+明天要做的事情：
+1、分析下是什么原因导致了污点传播过多，过程间的污点分析完善，注意如果是sink点则不进行深入分析（先忽略这个）。
+2、将前面的初始流程跑通（反编译&解析）
+3、多编写几个测试demo，测试下函数间和函数内。看下程序方面还有没有其他bug。
+
+函数调用中，如何进行污点的传递。
+https://www.zhihu.com/question/42012782/answer/93895215
+文章所述，DVM解释器栈类似一种寄存器窗口的东西，类似一个数组这么个东西.
+一个方法在调用另一个方法的时候，参数由本栈帧的out传出，由另一个函数的栈帧int接收.所以本质上，两个函数
+栈帧之间是有一个重叠区域的，即out和in是重叠的。所以这里minidvm需要增加的实现是，在frame栈帧里加
+两个属性，一个是out_reg，另一个是in_reg。其中，out_reg中存放当前这个执行时刻，栈帧的输出（即传递给下一个栈帧的参数），
+而另一个栈帧它的in_reg中存放的是接收到的参数，作为该函数传参，参与到该函数的指令执行。所以之前初始化的若干
+px寄存器需要修改一下。
+    Low addresses (0x00000000)
+                     +- - - - - - - - -+
+                     -  out0           -
+                     +-----------------+  <-- stack ptr (top of stack)
+                     +  VM-specific    +
+                     +  internal goop  +
+                     +-----------------+  <-- curFrame: FP for cur function
+                     +  v0 == local0   +
++-----------------+  +-----------------+
++  out0           +  +  v1 == in0      +
++-----------------+  +-----------------+
++  out1           +  +  v2 == in1      +
++-----------------+  +-----------------+
++  VM-specific    +
++  internal goop  +
++-----------------+  <-- frame ptr (FP) for previous function
++  v0 == local0   +
++-----------------+
++  v1 == local1   +
++-----------------+
++  v2 == in0      +
++-----------------+
++  v3 == in1      +
++-----------------+
++  v4 == in2      +
++-----------------+
+-                 -
+-                 -
+-                 -
++-----------------+  <-- interpStackStart
+
+为什么不直接从source->sink点呢？因为因为有一些寄存器的赋值操作在source点前面，如果只分析
+source->sink，如果其中涉及到一些数组分析的话，这可能获取不到下标值。所以这里改用从
+oncreate的第一个块开始->sink点记性分析，source在中间会在指令执行的时候被发现。
+
+demo8中，因为有4个sink点，而source点就一个，而最终的污点就传入了其中一个，所以只检测到一个漏洞，这是
+正确的。
+
+虽然sourc点和sink点只有一个，但是source点到达sink点的路线确是有多个，
+这是因为封装sink点的函数send被多次引用。所以最终输出的linearcode好多个。
+
+pip install redis==2.10.6
+这个版本的redis支持字典里嵌套字典，高版本的不允许，会报错。

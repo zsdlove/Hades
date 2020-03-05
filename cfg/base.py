@@ -32,15 +32,15 @@ class Walker:
 							self.AppInventory[class_name]['Properties'] = re.findall('[.]field\s+(.*?)\r\n', content, re.DOTALL)
 							self.AppInventory[class_name]['Methods'] = []
 							for m in re.findall('[.]method\s(.*?)\r\n(.*?)[.]end\s+method', content, re.DOTALL):
-							     try:
-								ind_meth = {}
-								ind_meth['Name'] = m[0].split(' ')[-1]
-								ind_meth['Instructions'] = []
-								for i in m[1].split('\r\n'):
-									if len(i)>0:
-										ind_meth['Instructions'].append( i.lstrip().rstrip() )
-								self.AppInventory[class_name]['Methods'].append( ind_meth )
-							     except:
-								pass
+								try:
+									ind_meth = {}
+									ind_meth['Name'] = m[0].split(' ')[-1]
+									ind_meth['Instructions'] = []
+									for i in m[1].split('\r\n'):
+										if len(i)>0:
+											ind_meth['Instructions'].append( i.lstrip().rstrip() )
+									self.AppInventory[class_name]['Methods'].append( ind_meth )
+								except:
+									pass
 				except:
 					pass

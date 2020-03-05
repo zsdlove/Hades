@@ -47,21 +47,32 @@ def getdata(request):
 		if "'" in apkname or "=" in apkname:
 			return
 		allData=dataBase.getdata(r,apkname)
-		print(json.loads(allData['codeAnalysis']))
-		retData={
-			"author": allData["author"],
-			"version": allData["version"],
-			"permission": allData["permission"],
-			"nastySDKs": allData["nastySDKs"],
-			"codeAnalysis": json.loads(allData["codeAnalysis"]),
-			"warming": json.loads(allData["warming"])
-		}
-		return render(request, "report.html", {"msg": retData})
+		try:
+			retData={
+					"author": allData.get("author"),
+					"version": allData.get("version"),
+					"packageName": allData.get("packageName"),
+					"permission": json.loads(allData.get("permission")),
+					"receiver": json.loads(allData.get("receiver")),
+					"provider": json.loads(allData.get("provider")),
+					"service": json.loads(allData.get("service")),
+					"activity": json.loads(allData.get("activity")),
+					"nastySDKs": json.loads(allData.get("nastySDKs")),
+					"otherSDKs": json.loads(allData.get("otherSDKs")),
+					"Advertisement": json.loads(allData.get("Advertisement")),
+					"thirdpartPayAPI": json.loads(allData.get("thirdpartPayAPI")),
+					"codeAnalysis": json.loads(allData.get("codeAnalysis")),
+					"warming": json.loads(allData.get("warming"))
+				}
+			return render(request, "report.html", {"msg": retData})
+		except:
+			return render(request,"loading.html",{"msg":""})
 	elif params.get("taskhash")!=None:
 		taskhash=params.get("taskhash")
 		if "'" in taskhash or "=" in taskhash:
 			return
 		allData=dataBase.getdata(r,taskhash)
+		print(allData)
 		print(json.loads(allData['codeAnalysis']))
 		retData={
 			"author": allData["author"],
@@ -94,6 +105,8 @@ def apk_security_check(request):
 				showmsg="APK文件上传成功！请稍后从:%s%s处获取报告."%(reporturl,apkhash)
 			elif Suffix=="jar":
 				showmsg = "jar包上传成功！请稍后从:%s%s处获取报告." % (reporturl_jar, apkhash)
+			elif Suffix=="zip":
+				showmsg = "zip包上传成功！请稍后从:%s%s处获取报告." % (reporturl_jar, apkhash)
 			return render(request,'android_staticscan.html',{"warming":showmsg})
 		else:
 			print("请上传.apk格式文件！")

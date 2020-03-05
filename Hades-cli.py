@@ -19,31 +19,16 @@ from utils.tools import *
 from config import *
 import threading
 from utils.entry import *
-from utils.manifestAnalysis import componentcheck
-from plugin.thirdpartSDK import *
-from plugin.permissionAnalyzer import *
 from utils.Reperter import *
-class Hades:
+
+class apkvulcheck:
 	def __init__(self):
 		self.resultinfo = {}
 		self.output = ''
 
-	def decompiledex(self, apkpath, outputPath):
-		try:
-			os.system(u"rm -rf workspace/result/*")
-			os.system(u"rm -rf HadesWeb/HadesWeb/static/apk/*")
-			#cmd = "java -jar lib/apktool.jar d  %s -o %s --no-res" % (apkpath,outputPath)
-			cmd="java -jar lib/baksmali.jar %s -o %s"%(apkpath,outputPath)
-			os.system(cmd)
-			logging.info("[init] - Decompile the dex file Successfully.")
-			print("[init] - Decompile the dex file Successfully.")
-		except:
-			logging.info("[init] - Can't decompile the dex file.")
-			print("[init] - Can't decompile the dex file.")
+	def VulScanEngine(self):
+		pass
 
-	'''
-	处理jar包，jar中是已经编译的java字节码，这里主要工作是将java字节码转smali字节码
-	'''
 	def handlejar(self, taskpath):
 
 		taskname=taskpath.split("/")[-1].split(".")[0]
@@ -198,7 +183,8 @@ class Hades:
 		'''
 		file=open("%s/result.json"%smaliFilepath,"a+")
 		file.write(json.dumps(dvm.resultContainer, indent=2, encoding="utf-8", ensure_ascii=False))
-
+		report=Reperter(dvm.resultContainer,apkname)
+		report.run()
 	def run(self, apkpath, target):
 		'''
 		handle the target project,support source mode&bytecode mode&jar mode
@@ -207,17 +193,24 @@ class Hades:
 			self.handleSource(apkpath)
 		elif target == "jar":
 			self.handlejar(apkpath)
-
+		elif target == "bytecode":
+			if apkpath != "":
+				self.VulScanEngine(apkpath)
+			else:
+				for apkpath in self.apknamelist:
+					self.VulScanEngine(apkpath)
 
 def engine(data):
-	avc = Hades()
+	avc = apkvulcheck()
 	data=data.replace("u'","\"").replace("'","\"")
-	taskpath = json.loads(data,"UTF-8")['apkpath']
+	apkpath = json.loads(data,"UTF-8")['apkpath']
 
-	if taskpath.split(".")[-1]=="zip":
-		avc.run(taskpath, "source")
-	elif taskpath.split(".")[-1]=="jar":
-		avc.run(taskpath,"jar")
+	if apkpath.split(".")[-1]=="apk":
+		avc.run(apkpath, "bytecode")
+	elif apkpath.split(".")[-1]=="zip":
+		avc.run(apkpath, "source")
+	elif apkpath.split(".")[-1]=="jar":
+		avc.run(apkpath,"jar")
 	else:
 		logging.info("unsupportted type of file.")
 
@@ -244,11 +237,15 @@ def engine_main():
 	print("unsubscribe.")
 
 
+def main(path):
+	avc = apkvulcheck()
+	avc.run(path, "bytecode")
+
+
 def sourceEngine(path):
-	avc = Hades()
+	avc = apkvulcheck()
 	avc.run(path, "source")
 
 
 if __name__ == '__main__':
 	engine_main()
-	#sourceEngine("workspace/java/whiteboxtest3")
