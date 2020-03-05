@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from captcha.models import CaptchaStore
-from captcha.helpers import captcha_image_url
+
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render,render_to_response
 from addtasks.models import task_que
 from addtasks.models import assert_info
@@ -89,9 +89,10 @@ def getdata(request):
 '''
 先异步上传文件再处理文件上传表单
 '''
+@csrf_exempt
 def apk_security_check(request):
 		if request.method == "POST":
-			pool = redis.ConnectionPool(host='127.0.0.1', port=6379, db=6)
+			pool = redis.ConnectionPool(host='0.0.0.0', port=6379, db=6)
 			r = redis.StrictRedis(connection_pool=pool)
 			global filepath
 			apkpath = "geekbackend/%s" % filepath
@@ -119,6 +120,7 @@ def apk_security_check(request):
 '''
 这里应该再做一下文件头的校验
 '''
+@csrf_exempt
 def handle_file_upload(request):
 	if request.method=="POST":
 		file_obj=request.FILES.get("file")
@@ -165,11 +167,12 @@ def render_android(request):
 
 
 #登录校验
+@csrf_exempt
 def login(request):
 	if request.method=="GET":
 		#login_form=loginform(request.POST)
-		hashkey = CaptchaStore.generate_key()
-		image_url = captcha_image_url(hashkey)
+		hashkey = ""
+		image_url = ""
 		return render(request,"login.html",{"hashkey":hashkey,"image_url":image_url})
 	elif request.method=="POST":
 		uf = loginform(request.POST)
@@ -255,6 +258,7 @@ def assert_entry(request):
 
 #处理资产录入
 #@login_required(login_url='login.html')
+@csrf_exempt
 def handle_newassert_entry(request):
 	if request.method=='POST':
 		assertdata=request.POST.get('target_urls')
@@ -277,6 +281,7 @@ def handle_newassert_entry(request):
 
 #处理任务添加
 #@login_required(login_url='login.html')
+@csrf_exempt
 def handlenewtasks(request):
 	if request.method=='POST':
 		print('打印target_url')

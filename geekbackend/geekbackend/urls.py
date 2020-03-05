@@ -33,7 +33,6 @@ urlpatterns = [
 	url(r'login.html',views.login),
 	url(r'login',views.login),
 	url(r'logout',views.logout_action),
-	url(r'^captcha/', include('captcha.urls')),
 	url(r'android_staticscan', views.render_android),
 	url(r'Host_Security_Scan.html', views.render_HostSec),
 	url(r'malware-analysis.html', views.render_malware_analysis),

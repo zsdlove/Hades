@@ -13,21 +13,6 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
-CAPTCHA_OUTPUT_FORMAT = u'%(text_field)s %(hidden_field)s %(image)s'
-# 噪点样式
-CAPTCHA_NOISE_FUNCTIONS = (
-    # 'captcha.helpers.noise_null', # 没有样式
-    # 'captcha.helpers.noise_arcs', # 线
-    'captcha.helpers.noise_dots', # 点
-)
-
-# 图片大小
-CAPTCHA_IMAGE_SIZE = (120, 50)
-CAPTCHA_BACKGROUND_COLOR = '#ffffff'
-CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'
-
-CAPTCHA_LENGTH = 4 # 字符个数
-CAPTCHA_TIMEOUT = 1 # 超时(minutes)
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -41,7 +26,7 @@ SECRET_KEY = 'dk%q4jyv^a$=g873l&(je(vymh4hhw)xuc&9u&q&e%yx%-c&$z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','192.168.30.160','192.168.220.132','192.168.30.177']
+ALLOWED_HOSTS = ['127.0.0.1','192.168.30.160','192.168.220.132','192.168.30.177','192.168.31.222']
 
 
 # Application definition
@@ -53,8 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'addtasks',
-    'captcha',
+    'addtasks'
 ]
 
 MIDDLEWARE = [
@@ -95,7 +79,6 @@ DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-		'ENGINE':'django.db.backends.mysql',
 		'NAME':'geekscanner',
 		'USER':'root',
 		'PASSWORD':'root',
