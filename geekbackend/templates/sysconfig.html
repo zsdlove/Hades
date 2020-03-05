@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>系统配置</title>
+  <link rel="stylesheet" href="/static/css/layui.css">
+</head>
+<body>
+<fieldset class="layui-elem-field site-demo-button" style="margin-top: 5px;">
+        <legend>系统配置</legend>
+<form class="layui-form" action="addnewtasks" method="POST">
+  <div class="layui-form-item">
+    <label class="layui-form-label">爬虫速度</label>
+    <div class="layui-input-block">
+      <select name="city" lay-verify="required">
+        <option value="5">慢速(5个线程)</option>
+        <option value="10">正常(10个线程)</option>
+        <option value="20">较快(20个线程)</option>
+        <option value="100">光速(100个线程)</option>
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item " >
+    <div class="layui-input-block">
+      <button type='submit' class="layui-btn" lay-submit lay-filter="formDemo">保存设置</button>
+      <button type="reset" class="layui-btn layui-btn-primary">还原默认</button>
+    </div>
+  </div>
+</form>
+</fieldset>
+<script src="static/layui.js"></script>
+<script>
+    layui.use('form', function(){
+      var form = layui.form;
+
+      //监听提交
+      form.on('submit(formDemo)', function(data){
+        layer.msg(JSON.stringify(data.field));
+        return false;
+      });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>影武之刃</title>
+  <link rel="stylesheet" href="/static/css/layui.css">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-header">
+    <div class="layui-logo">影武之刃</div>
+    <!-- 头部区域（可配合layui已有的水平导航） -->
+    <ul class="layui-nav layui-layout-left">
+      <li class="layui-nav-item"><a href="unrealized.html" target="option">控制台</a></li>
+      <li class="layui-nav-item"><a href="unrealized.html" target="option">插件管理</a></li>
+      <li class="layui-nav-item"><a href="malware-analysis.html" target="option">病毒分析</a></li>
+      <li class="layui-nav-item"><a href="unrealized.html" target="option">云主机管理</a></li>
+      <li class="layui-nav-item"><a href="Host_Security_Scan.html" target="option">主机安全风险检测</a></li>
+      <li class="layui-nav-item"><a href="assert_entry.html" target="option">企业资产巡检</a></li>
+      <li class="layui-nav-item"><a href="android_staticscan" target="option">安卓白盒静态扫描</a></li>
+      <li class="layui-nav-item"><a href="emergencyresp.html" target="option">应急响应</a></li>
+      <li class="layui-nav-item">
+        <a href="javascript:;">其它模块</a>
+        <dl class="layui-nav-child">
+          <dd><a href="test.html" target="option">邮件管理</a></dd>
+          <dd><a href="test.html" target="option">消息管理</a></dd>
+          <dd><a href="StepOnTheSpot.html" target="option">踩点</a></dd>
+          <dd><a href="sysconfig.html" target="option">系统配置</a></dd>
+        </dl>
+      </li>
+    </ul>
+    <ul class="layui-nav layui-layout-right">
+      <li class="layui-nav-item">
+        <a href="javascript:;">
+          <img src="static/images/pic.jpg" class="layui-nav-img">
+          Pony
+        </a>
+        <dl class="layui-nav-child">
+          <dd><a href="aboutme.html" target="option">基本资料</a></dd>
+          <dd><a href="">安全设置</a></dd>
+        </dl>
+      </li>
+      <li class="layui-nav-item"><a href="logout">退出</a></li>
+    </ul>
+  </div>
+  
+  <div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+        <li class="layui-nav-item"><a href="addtasks2.html" target="option">添加任务</a></li>
+        <li class="layui-nav-item layui-nav-itemed">
+          <a class="" href="javascript:;">任务列表</a>
+          <!--<dl class="layui-nav-child">
+            {% for task in taskList %}
+                <dd><a href="#">{{task}}</a></dd>
+            {% endfor %}
+          </dl>-->
+        </li>
+      </ul>
+    </div>
+  </div>
+<script>
+function iFrameHeight() {
+    var ifm = document.getElementById("option");
+    var subWeb = document.frames ? document.frames["option"].document : ifm.contentDocument;
+    if (ifm != null && subWeb != null) {
+        ifm.height = subWeb.body.scrollHeight;
+        ifm.width = subWeb.body.scrollWidth;
+    }
+}
+</script>
+  <div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div style="padding: 15px;"><iframe src="geekpage.html"id="option" name="option" scrolling="yes" onload="iFrameHeight()" frameborder="0" style="padding: 0px; width:1200px;float:left; margin:0; padding:0;height:800px;"></iframe></div>
+  </div>
+</div>
+<script src="static/layui.js"></script>
+<script>
+//JavaScript代码区域
+layui.use('element', function(){
+  var element = layui.element;
+  
+});
+</script>
+</body>
+</html>

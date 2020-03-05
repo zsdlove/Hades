@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hades - Java白盒测试报告</title>
+    <link rel="stylesheet" href="/static/css/layui.css">
+    <script src="/static/layui.js"></script>
+</head>
+<body>
+<div class="site-content" >
+    <h1 class="site-h1" style="color:green"><center>Hades - Java白盒测试报告</center></h1>
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+      <ul class="layui-tab-title">
+        <li class="layui-this">任务信息</li>
+        <li>漏洞信息</li>
+        <li>关于作者</li>
+      </ul>
+      <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            无
+        </div>
+        <div class="layui-tab-item">
+            {%  for k in msg.codeAnalysis %}
+            <fieldset class="layui-elem-field">
+                <legend>漏洞信息</legend>
+                <div class="layui-field-box">
+                  <div class="layui-collapse">
+                      <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">source点</h2>
+                        <div class="layui-colla-content layui-show">{{k.source}}</div>
+                      </div>
+                      <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">source点位置</h2>
+                        <div class="layui-colla-content layui-show">{{k.sourceBelongTo}}</div>
+                      </div>
+                      <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">sink点</h2>
+                        <div class="layui-colla-content layui-show">{{k.sink}}</div>
+                      </div>
+                      <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">sink点位置</h2>
+                        <div class="layui-colla-content layui-show">{{k.sinkBelongTo}}</div>
+                      </div>
+                      <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">代码轨迹追踪</h2>
+                        <div class="layui-colla-content layui-show">
+                            {% for l in k.linearCode %}
+                                <li>{{l}}</li>
+                            {% endfor %}
+                        </div>
+                      </div>
+                      <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">控制流图</h2>
+                        <div class="layui-colla-content layui-show">
+                            <img src="/static/images/default.png" />
+                        </div>
+                      </div>
+                  </div>
+                </div>
+            </fieldset>
+            {%  endfor %}
+            <script>
+            //注意：折叠面板 依赖 element 模块，否则无法进行功能性操作
+            layui.use('element', function(){
+              var element = layui.element;
+
+              //…
+            });
+            </script>
+        </div>
+
+        <div class="layui-tab-item">
+            {%  for k,v in msg.permission.items %}
+                <li>{{ k }}-{{ v }}</li>
+            {% endfor %}
+        </div>
+        <div class="layui-tab-item">
+            <h3>昵称:pOny@moresec</h3>
+            <h3>职称:默安科技-安全研究院-前沿研究部 安全研究员</h3>
+            <h3>研究方向:移动安全、木马攻防技术、白盒</h3>
+            <h3>联系方式:747289639(微信同)</h3>
+        </div>
+      </div>
+    </div>
+</div>
+<script>
+layui.use('element', function(){
+  var element = layui.element;
+});
+</script>
+</body>
+</html>

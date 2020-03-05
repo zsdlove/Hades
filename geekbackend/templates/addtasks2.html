@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>添加扫描任务</title>
+  <link rel="stylesheet" href="/static/css/layui.css">
+</head>
+<body>
+<fieldset class="layui-elem-field site-demo-button" style="margin-top: 5px;">
+        <legend>添加扫描任务</legend>
+<form class="layui-form" action="addnewtasks" method="POST">
+    <div class="layui-form-item">
+    <label class="layui-form-label">任务名</label>
+    <div class="layui-input-inline">
+      <input type="text" name="task_name" required  lay-verify="required" placeholder="请输入任务名" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">目标URL</label>
+    <div class="layui-input-inline">
+      <input type="text" name="target_url" required  lay-verify="required" placeholder="请输入目标URL" autocomplete="off" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux">示例：http://testphp.vulnweb.com</div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">扫描速度</label>
+    <div class="layui-input-block">
+      <select name="city" lay-verify="required">
+        <option value="0">慢速</option>
+        <option value="1">正常</option>
+        <option value="2">较快</option>
+        <option value="3">光速</option>
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+      <label class="layui-form-label">选择插件</label>
+      <div>
+        <input type='checkbox' name='middle' title='中间件漏洞'>
+        <input type='checkbox' name='sqli' title='SQL注入'>
+        <input type='checkbox' name='xss' title='跨站脚本执行'>
+        <input type='checkbox' name='xss' title='跨站脚本执行'>
+        <input type='checkbox' name='xss' title='跨站脚本执行'>
+        <input type='checkbox' name='cmdi' title='命令执行'>
+        <input type='checkbox' name='cmdi' title='命令执行'>
+        <input type='checkbox' name='cmdi' title='命令执行'>
+        <input type='checkbox' name='struts2-045' title='struts2-045'>
+        <input type='checkbox' name='struts2-046' title='struts2-046'>
+        <input type='checkbox' name='struts2-048' title='struts2-048'>
+        <input type='checkbox' name='struts2-052' title='struts2-052'>
+        <input type='checkbox' name='struts2-056' title='struts2-056'>
+      </div>
+      <div style="width:1000px;text-align:center">
+        <br>
+        <div id="demo20" ></div>
+      </div>
+  </div>
+  <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">任务描述</label>
+    <div class="layui-input-block">
+      <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <!--<button class="layui-btn" lay-submit lay-filter="formDemo">开始扫描</button>-->
+      <input type="submit" class="layui-btn" value="开始扫描">
+      <input type="reset" class="layui-btn" value="重新输入">
+    </div>
+  </div>
+  <div class="layui-form-item layui-form-text">
+    <div class="layui-input-block">
+      <p><font color="red">{{data}}</font></p>
+    </div>
+  </div>
+</form>
+</fieldset>
+<script src="static/layui.js"></script>
+<script>
+layui.use('form', function(){
+  var form = layui.form;
+
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+    layer.msg(JSON.stringify(data.field));
+    return false;
+  });
+});
+</script>
+
+
+<script>
+//分页部分继续调一下
+layui.use(['laypage', 'layer'], function(){
+  var laypage = layui.laypage
+  ,layer = layui.layer;
+  //将一段数组分页展示
+
+  //测试数据
+  var data = [
+        "<input type='checkbox' name='middle' title='中间件漏洞'>",
+        "<input type='checkbox' name='sqli' title='SQL注入'>",
+        "<input type='checkbox' name='xss' title='跨站脚本执行'>",
+        "<input type='checkbox' name='cmdi' title='命令执行'>",
+        "<input type='checkbox' name='struts2-045' title='struts2-045'>",
+        "<input type='checkbox' name='struts2-052' title='struts2-052'>",
+        "<input type='checkbox' name='struts2-052' title='struts2-052'>",
+        "<input type='checkbox' name='struts2-052' title='struts2-052'>",
+        "<input type='checkbox' name='struts2-052' title='struts2-052'>",
+        "<input type='checkbox' name='struts2-052' title='struts2-052'>",
+        "<input type='checkbox' name='struts2-052' title='struts2-052'>",
+        "<input type='checkbox' name='struts2-052' title='struts2-052'>",
+        "<input type='checkbox' name='struts2-052' title='struts2-052'>",
+        "<input type='checkbox' name='struts2-052' title='struts2-052'>",
+        "<input type='checkbox' name='struts2-052' title='struts2-052'>",
+        "<input type='checkbox' name='struts2-052' title='struts2-052'>",
+        "<input type='checkbox' name='struts2-052' title='struts2-052'>",
+        "<input type='checkbox' name='struts2-052' title='struts2-052'>",
+  ];
+  //调用分页
+  laypage.render({
+    elem: 'demo20'
+    ,count: data.length
+    ,jump: function(obj){
+      //模拟渲染
+      document.getElementById('biuuu_city_list').innerHTML = function(){
+        var arr = []
+        ,thisData = data.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+        layui.each(thisData, function(index, item){
+          arr.push('<li>'+ item +'</li>');
+        });
+        return arr.join('');
+      }();
+    }
+  });
+
+});
+</script>
+</body>
+</html>
