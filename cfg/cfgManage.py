@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from cfg.base import Walker
-from cfg.packages import PackagesFinder
 from cfg.instructions import InstructionsFinder
 from cfg.graphs import GraphManager
 from config import *
@@ -29,19 +28,6 @@ class CFGBuilder(object):
 		self.imagepath=""
 		self.resultados=""
 		self.Diagraph=""
-
-	def do_packageusage(self, arg):
-		if (not arg):
-			print("Incorrect Syntax: help packageusage.\n")
-		else:
-			arg = ''.join(arg)
-			fnd = PackagesFinder(arg)
-			self.walker.assign_finder(fnd)
-			pkgData = self.walker.do_find()
-			if len(pkgData)>0:
-				print("*  Analized Application uses the next %s Methods:" % arg)
-				print(sorted(pkgData))
-
 
 	def do_instructionflow(self, method_def):
 			method_definition=method_def
