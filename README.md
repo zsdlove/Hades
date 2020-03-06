@@ -15,8 +15,8 @@ start web server:
 ```
 ### 使用docker安装Hades
 ```shell
->>docker build -t geekbackend .
->>docker run -p 8088:8088 geekbackend
+>>docker build -t hades .
+>>docker run -p 8088:8088 hades
 访问:http://127.0.0.1:8088/geekscanner
 :)enjoy it.
 ```
