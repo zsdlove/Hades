@@ -17,6 +17,7 @@ start web server:
 ```shell
 >>docker build -t geekbackend .
 >>docker run -p 8088:8088 geekbackend
+访问:http://127.0.0.1:8088/geekscanner
 :)enjoy it.
 ```
 ## 一、引言
