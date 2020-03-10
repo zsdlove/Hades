@@ -75,10 +75,10 @@ def getdata(request):
 		print(allData)
 		print(json.loads(allData['codeAnalysis']))
 		retData={
-			"author": allData["author"],
-			"version": allData["version"],
-			"codeAnalysis": json.loads(allData["codeAnalysis"]),
-			"warming": json.loads(allData["warming"])
+			"author": allData.get("author"),
+			"version": allData.get("version"),
+			"codeAnalysis": json.loads(allData.get("codeAnalysis")),
+			"warming": json.loads(allData.get("warming"))
 		}
 		return render(request, "reportForJavaWhite.html", {"msg": retData})
 	else:
