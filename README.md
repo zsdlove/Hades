@@ -2,9 +2,6 @@
 **基于虚拟执行及污点跟踪技术**
 ![markdown](https://image.3001.net/images/20200229/1582976797_5e5a4f1dc3478.png?raw=true "图片1")
 
-## Live playback
-![markdown](https://github.com/zsdlove/Hades/blob/master/img/Liveplayback.jpg?raw=true "图片1")
-
 ## Hades开源项目交流群
 ![markdown](https://github.com/zsdlove/Hades/blob/master/wxq.jpg?raw=true "图片1")
 
@@ -959,3 +956,7 @@ sink点
 ## 九、联系方式:
 #### 1、QQ:747289639（微信同）
 #### 2、zhengsidie@gmail.com
+
+## Live playback
+![markdown](https://github.com/zsdlove/Hades/blob/master/img/Liveplayback.jpg?raw=true "图片1")
+#### ppt下载地址 https://pan.baidu.com/s/1cyYurN6H9rKJN7PVNp8GbQ 提取码：97x0
