@@ -21,7 +21,9 @@ import threading
 from utils.entry import *
 from utils.Reperter import *
 from plugin.shellDetector import *
-
+import queue
+event = threading.Event()
+que = queue.Queue(10000)
 '''
 处理检测结果
 '''
@@ -238,8 +240,11 @@ def engine_main():
 		print("Listen on channel : %s " % item['channel'].decode())
 		if item['type'] == 'message':
 			data = item['data'].decode()
-			t = threading.Thread(target=engine, args=[data])
+			que.put(data)
+			t=myThread()
+			t.setDaemon(True)
 			t.start()  # 线程启动
+			#t.join(3600)#最长扫描一个小时
 			if item['data'] == 'over':
 				print(item['channel'].decode(), '停止发布')
 				break
@@ -256,8 +261,24 @@ def sourceEngine(path):
 	avc = apkvulcheck()
 	avc.run(path, "source")
 
+import threading
+import time
+class myThread(threading.Thread):
+	def __init__(self):
+		threading.Thread.__init__(self)
+	def run(self):
+			semaphore.acquire()
+			if que.qsize()>0:
+				data=que.get()#获取任务
+				engine(data)
+			que.task_done()
+			semaphore.release()
+			time.sleep(0.5)
 
 if __name__ == '__main__':
+	#engine_main()
+	threadNum=100
+	semaphore=threading.Semaphore(threadNum)
 	engine_main()
 	#ac=apkvulcheck()
 	#ac.handlejar(taskpath="workspace/java/org2.jar")
