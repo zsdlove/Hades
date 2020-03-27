@@ -102,8 +102,7 @@ class InstructionsFinder(object):
 	(outCall, incetiqueta, posetiqueta)
 	如果该指令为普通指令 则incetiqueta=posetiqueta
 	如果该指令为方法引用指令 则则incetiqueta！=posetiqueta，posetiqueta坐标为1,表示新代码块的位置坐标
-	他们是放在同一个图上的。
-	明天把genBlockList函数再理清一下
+
 	'''
 	def genBlockList(self, methods):
 		for (cname, mname, minsts) in methods:
@@ -113,7 +112,7 @@ class InstructionsFinder(object):
 			for i2 in minsts:
 				instrPos = minsts.index(i2) + 1
 				#b.etiqueta=Lfridatest/test/com/myapplication/Talkabout; lovebaby(Ljava/lang/String;)Ljava/lang/String; 19
-				blockPos = int(b.etiqueta.split(' ')[-1] )#这个应该表示指令的编号
+				blockPos = int(b.etiqueta.split(' ')[-1] )
 				if re.search("^goto", i2) != None:#无条件跳转分支
 					(outCall, incetiqueta, posetiqueta) = self._splitBlock(b, cname, mname, blockPos, 1, minsts, i2)
 					b.bifurcaciones = [('jump',posetiqueta)]#分支
