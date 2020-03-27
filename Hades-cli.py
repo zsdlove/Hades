@@ -22,7 +22,8 @@ from utils.entry import *
 from utils.Reperter import *
 from plugin.shellDetector import *
 import queue
-event = threading.Event()
+import threading
+import time
 que = queue.Queue(10000)
 '''
 处理检测结果
@@ -241,9 +242,9 @@ def engine_main():
 		if item['type'] == 'message':
 			data = item['data'].decode()
 			que.put(data)
-			t=myThread()
+			t=Worker()
 			t.setDaemon(True)
-			t.start()  # 线程启动
+			t.start()
 			#t.join(3600)#最长扫描一个小时
 			if item['data'] == 'over':
 				print(item['channel'].decode(), '停止发布')
@@ -261,9 +262,7 @@ def sourceEngine(path):
 	avc = apkvulcheck()
 	avc.run(path, "source")
 
-import threading
-import time
-class myThread(threading.Thread):
+class Worker(threading.Thread):
 	def __init__(self):
 		threading.Thread.__init__(self)
 	def run(self):
