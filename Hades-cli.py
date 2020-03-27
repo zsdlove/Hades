@@ -20,8 +20,26 @@ from config import *
 import threading
 from utils.entry import *
 from utils.Reperter import *
-
 from plugin.shellDetector import *
+
+'''
+处理检测结果
+'''
+def handleResult(func):
+	def wrapper(*args,**kwargs):
+		ret=func(*args,**kwargs)
+		'''
+		save the result.
+		'''
+		resultpath=ret[2]
+		file=open(resultpath,"a+")
+		file.write(json.dumps(ret[0], indent=2, encoding="utf-8", ensure_ascii=False))
+		report=Reperter(ret[0],ret[1])
+		report.run()
+		print("[Reporter] - finished report process.")
+		return ret
+	return wrapper
+
 class apkvulcheck:
 	def __init__(self):
 		self.resultinfo = {}
@@ -30,6 +48,7 @@ class apkvulcheck:
 	def VulScanEngine(self):
 		pass
 
+	@handleResult
 	def handlejar(self, taskpath):
 
 		taskname=taskpath.split("/")[-1].split(".")[0]
@@ -76,28 +95,22 @@ class apkvulcheck:
 		'''
 		logging.info("[VulScanEngine] - Process the final result and report it.")
 		print("[VulScanEngine] - Process the final result and report it.")
-
-		'''
-		save the result.
-		'''
-		file=open("%s/result.json"%smaliFilepath,"a+")
-		file.write(json.dumps(dvm.resultContainer, indent=2, encoding="utf-8", ensure_ascii=False))
-		report=Reperter(dvm.resultContainer,taskname)
-		report.run()
-		print("[VulScanEngine] - finished report process.")
+		resultpath = "%s/result.json" % smaliFilepath
+		return dvm.resultContainer,taskname,resultpath
 
 	'''
 	处理源码，Hades-master支持将java代码转为smali这种中间代码表示形式，这样便于基于同一种模式对程序
 	进行控制流构建，进行分析。
 	使用baksmali.jar，dx.jar,javac
 	'''
-	def handleSource(self, apkpath):
+	@handleResult
+	def handleSource(self, taskpath):
 		'''
 		先对上传的zip文件进行解压
 		'''
-		apkname=apkpath.split("/")[-1].split(".")[0]
-		outputpath="workspace/java/%s"%apkname
-		unzip(apkpath,outputpath)
+		taskname=taskpath.split("/")[-1].split(".")[0]
+		outputpath="workspace/java/%s"%taskname
+		unzip(taskpath,outputpath)
 
 		'''
 		找到所有的.java文件，使用javac [source].java -cp [apkpath]将其全部编译
@@ -151,7 +164,7 @@ class apkvulcheck:
 		将dex文件转为smali文件
 		'''
 		try:
-			smaliFilepath="workspace/result/%s"%apkname
+			smaliFilepath="workspace/result/%s"%taskname
 			os.system("java -jar lib/baksmali.jar %s -o %s" % (outputpath + "/target.dex", smaliFilepath))
 			logging.info("dex2smali successfully!")
 		except:
@@ -169,7 +182,7 @@ class apkvulcheck:
 		print("[VulScanEngine] - %d entry point found."%len(activityEntryList))
 		dvm = miniDVM()
 		logging.info("[VulScanEngine] - Create a DVM instance.")
-		dvm.initVM(AEL, apkname)
+		dvm.initVM(AEL, taskname)
 		logging.info("[VulScanEngine] - Ready to interpret the smali bytecode.")
 		print("[VulScanEngine] - Ready to interpret the smali bytecode.")
 		dvm.run()
@@ -179,13 +192,9 @@ class apkvulcheck:
 		'''
 		logging.info("[VulScanEngine] - Process the final result and report it.")
 		print("[VulScanEngine] - Process the final result and report it.")
-		'''
-		save the result.
-		'''
-		file=open("%s/result.json"%smaliFilepath,"a+")
-		file.write(json.dumps(dvm.resultContainer, indent=2, encoding="utf-8", ensure_ascii=False))
-		report=Reperter(dvm.resultContainer,apkname)
-		report.run()
+		resultpath="%s/result.json"%smaliFilepath
+
+		return dvm.resultContainer,taskname,resultpath
 	def run(self, apkpath, target):
 		'''
 		handle the target project,support source mode&bytecode mode&jar mode
@@ -250,3 +259,6 @@ def sourceEngine(path):
 
 if __name__ == '__main__':
 	engine_main()
+	#ac=apkvulcheck()
+	#ac.handlejar(taskpath="workspace/java/org2.jar")
+	#ac.handleSource(taskpath="workspace/java/whiteboxtest4.zip")
