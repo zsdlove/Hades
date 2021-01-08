@@ -2,9 +2,6 @@
 **基于虚拟执行及污点跟踪技术**
 ![markdown](https://image.3001.net/images/20200229/1582976797_5e5a4f1dc3478.png?raw=true "图片1")
 
-## Hades开源项目交流群
-![markdown](https://github.com/zsdlove/Hades/blob/master/wxq.jpg?raw=true "图片1")
-
 ## 使用说明
 ```shell
 start engine:
